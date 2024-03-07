@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,9 +18,10 @@ import java.util.UUID;
 @Service
 public class MovieService {
 
-    @Autowired
+    @Autowired()
     MovieRepository movieRepository;
 
+    @Transactional()
     public ResponseEntity<MovieModel> saveMovie(MovieRecordDTO newMovieDto) {
         var newMovieModel = new MovieModel();
         BeanUtils.copyProperties(newMovieDto, newMovieModel);
@@ -40,6 +42,7 @@ public class MovieService {
         return ResponseEntity.status(HttpStatus.OK).body(movieModel);
     }
 
+    @Transactional()
     public ResponseEntity<Object> updateMovieById(MovieRecordDTO movieDto, UUID movieId) {
         Optional<MovieModel> movieModel = movieRepository.findById(movieId);
 
@@ -52,6 +55,7 @@ public class MovieService {
         return ResponseEntity.status(HttpStatus.OK).body(movieRepository.save(updatedMovie));
     }
 
+    @Transactional()
     public ResponseEntity<Object> deleteMovieById(UUID movieId) {
         Optional<MovieModel> movieModel = movieRepository.findById(movieId);
 
@@ -60,6 +64,6 @@ public class MovieService {
         }
 
         movieRepository.delete(movieModel.get());
-        return ResponseEntity.status(HttpStatus.OK).body("Movie deleted sucessfuly");
+        return ResponseEntity.status(HttpStatus.OK).body("Movie deleted successfuly");
     }
 }

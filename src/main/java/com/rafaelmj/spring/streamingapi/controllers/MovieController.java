@@ -16,7 +16,7 @@ import java.util.UUID;
 @RequestMapping("/movies")
 public class MovieController {
 
-    @Autowired
+    @Autowired()
     MovieService movieService;
 
     @PostMapping()
